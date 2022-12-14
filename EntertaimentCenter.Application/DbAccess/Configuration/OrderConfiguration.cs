@@ -16,6 +16,7 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
                 CustomEventId = 1,
                 PlaceId = 1,
                 ClientId = 1,
+                Status = "Completed",
             },
 
             new Order
@@ -24,6 +25,7 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
                 CustomEventId = 2,
                 PlaceId = 2,
                 ClientId = 2,
+                Status = "In proseccing"
             },
 
             new Order
@@ -32,6 +34,7 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
                 CustomEventId = 3,
                 PlaceId = 3,
                 ClientId = 3,
+                Status = "Completed"
             }
         );
     }

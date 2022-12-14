@@ -44,6 +44,7 @@ public class ApiRoutes
 
     public static class OrderRoutes
     {
+        public const string GetFullOrdersInformation = Base + "/fullOrdersInformation";
         public const string GetOrders = Base + "/orders";  
         public const string GetOrderById = Base + "/orders/{id}";
         public const string CreateOrder = Base + "/orders";

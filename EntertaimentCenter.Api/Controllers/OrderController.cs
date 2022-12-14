@@ -13,13 +13,63 @@ namespace EntertaimentCenter.Api.Controllers;
 [ApiController]
 public class OrderController : ControllerBase
 {
-    private readonly IServices<Order> _service;
+    private readonly IServices<Order> _orderService;
+    private readonly IServices<Client> _clientService;
+    private readonly IServices<DiscountCard> _discountCardService;
+    private readonly IServices<Discount> _discountService;
+    private readonly IServices<Place> _placeService;
+    private readonly IServices<CustomEvent> _eventService;
     private readonly IMapper _mapper;
 
-    public OrderController(IServices<Order> service, IMapper mapper)
+    public OrderController(IServices<Order> orderService, 
+        IServices<Client> clientService,
+        IServices<DiscountCard> discountCardService,
+        IServices<Discount> discountService,
+        IServices<Place> placeService,
+        IServices<CustomEvent> eventService,
+        IMapper mapper)
     {
-        _service = service;
+        _orderService = orderService;
+        _clientService = clientService;
+        _discountCardService = discountCardService;
+        _discountService = discountService;
+        _placeService = placeService;
+        _eventService = eventService;
         _mapper = mapper;
+    }
+
+    [HttpGet(ApiRoutes.OrderRoutes.GetFullOrdersInformation)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetFullInformation(CancellationToken token)
+    {
+        var orders = await _orderService.SelectAll(token);
+
+        var discountCards = await _discountCardService.SelectAll(token);
+
+        var fullOrderInformationList = new List<FullOrderInformation>();
+
+        foreach (var order in orders)
+        {
+            var orderClient = await _clientService.FindById(order.ClientId);
+            var discountCard = await _discountCardService.FindById(order.ClientId);
+            var orderEvents = (await _eventService.SelectAll(token)).Where(i => i.Id == order.CustomEventId);
+
+            fullOrderInformationList.Add(new FullOrderInformation
+            {
+                OrderId = order.Id,
+                ClientName = orderClient.Name,
+                ClientEmail = orderClient.Email,
+                DiscountValue = (await _discountService.FindById(discountCard.DiscountId)).Value,
+                Events = orderEvents.ToList(),
+                StartTime = orderEvents.First().StartTime.Date,
+                PlaceId = (await _placeService.FindById(order.PlaceId)).Id,
+                OrderStatus = order.Status,
+            });
+        }
+
+        return Ok(fullOrderInformationList);
     }
 
     [HttpGet(ApiRoutes.OrderRoutes.GetOrders)]
@@ -28,7 +78,7 @@ public class OrderController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(CancellationToken token)
     {
-        var res = await _service.SelectAll(token);
+        var res = await _orderService.SelectAll(token);
 
         var response = _mapper.Map<List<ResponceOrderModel>>(res);
 
@@ -42,7 +92,7 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> GetById(int id,
         CancellationToken token)
     {
-        var foundObject = await _service.FindById(id, token);
+        var foundObject = await _orderService.FindById(id, token);
 
         var response = _mapper.Map<ResponceOrderModel>(foundObject);
 
@@ -58,7 +108,7 @@ public class OrderController : ControllerBase
     {
         var map = _mapper.Map<Order>(request);
 
-        var createdId = await _service.Create(map, token);
+        var createdId = await _orderService.Create(map, token);
 
         return Ok(createdId);
     }
@@ -74,7 +124,7 @@ public class OrderController : ControllerBase
 
         newObject.Id = id;
 
-        await _service.Update(newObject, token);
+        await _orderService.Update(newObject, token);
 
         return Ok();
     }
@@ -86,7 +136,7 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> Delete(int id,
         CancellationToken token)
     {
-        await _service.Delete(id, token);
+        await _orderService.Delete(id, token);
 
         return Ok();
     }

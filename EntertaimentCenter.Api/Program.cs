@@ -3,6 +3,17 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "CORS",
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyHeader();
+            policy.AllowAnyHeader();
+        });
+});
+
 // Add services to the container.
 
 builder.Services.AddApplication(builder.Configuration);
@@ -22,6 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("COES");
 
 app.UseHttpsRedirection();
 

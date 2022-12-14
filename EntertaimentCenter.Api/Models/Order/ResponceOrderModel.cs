@@ -14,4 +14,7 @@ public class ResponceOrderModel
 
     [Required]
     public int ClientId { get; set; }
+
+    [Required]
+    public string Status { get; set; }
 }

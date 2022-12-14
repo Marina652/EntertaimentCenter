@@ -13,6 +13,8 @@ public class Order : BaseEntity
     [Required]
     public int ClientId { get; set; }
 
+    public string Status { get; set; }
+
     public ICollection<CustomEvent> CustomEvents { get; set; }
 
     public ICollection<Place> Places { get; set; }

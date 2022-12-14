@@ -19,10 +19,12 @@ public static class DI
         services.AddDbContext<EntertaimentCenterDbContext>(options =>
               options.UseSqlServer(connectionString));
 
-
-        services.AddTransient<IServices<BaseEntity>, EntertaimentCenterService<BaseEntity>>();
-
         services.AddTransient<IServices<Client>, EntertaimentCenterService<Client>>();
+        services.AddTransient<IServices<CustomEvent>, EntertaimentCenterService<CustomEvent>>();
+        services.AddTransient<IServices<Discount>, EntertaimentCenterService<Discount>>();
+        services.AddTransient<IServices<DiscountCard>, EntertaimentCenterService<DiscountCard>>();
+        services.AddTransient<IServices<Order>, EntertaimentCenterService<Order>>();
+        services.AddTransient<IServices<Place>, EntertaimentCenterService<Place>>();
 
         return services;
     }
