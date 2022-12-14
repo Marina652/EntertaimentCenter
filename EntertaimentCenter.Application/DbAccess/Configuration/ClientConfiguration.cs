@@ -14,6 +14,8 @@ internal class ClientConfiguration : IEntityTypeConfiguration<Client>
             {
                 Id = 1,
                 Name = "John Smith",
+                Login = "John",
+                Password = "password",
                 Phone = "555-555-5555",
                 DateOfBirth = new DateTime(1990, 1, 1),
                 Email = "john.smith@example.com",
@@ -23,6 +25,8 @@ internal class ClientConfiguration : IEntityTypeConfiguration<Client>
              {
                  Id = 2,
                  Name = "Jane Doe",
+                 Login = "Jone",
+                 Password = "123",
                  Phone = "555-555-5556",
                  DateOfBirth = new DateTime(1995, 2, 14),
                  Email = "jane.doe@example.com",
@@ -32,6 +36,8 @@ internal class ClientConfiguration : IEntityTypeConfiguration<Client>
              {
                  Id = 3,
                  Name = "Bob Johnson",
+                 Login = "Bob",
+                 Password = "password",
                  Phone = "555-555-5557",
                  DateOfBirth = new DateTime(1985, 3, 31),
                  Email = "bob.johnson@example.com",
@@ -41,6 +47,8 @@ internal class ClientConfiguration : IEntityTypeConfiguration<Client>
              {
                  Id = 4,
                  Name = "Alice Williams",
+                 Login = "AW",
+                 Password = "alice",
                  Phone = "555-555-5558",
                  DateOfBirth = new DateTime(1980, 4, 15),
                  Email = "alice.williams@example.com",

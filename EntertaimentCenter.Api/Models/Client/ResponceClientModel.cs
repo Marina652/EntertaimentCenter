@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace EntertaimentCenter.Api.Models.Client;
 
@@ -9,6 +10,15 @@ public class ResponceClientModel
     [Required]
     [StringLength(100)]
     public string Name { get; set; }
+
+    [Required]
+    [StringLength(100)]
+    public string Login { get; set; }
+
+    [Required]
+    [StringLength(100)]
+    [PasswordPropertyText]
+    public string Password { get; set; }
 
     [Phone]
     [Required]
