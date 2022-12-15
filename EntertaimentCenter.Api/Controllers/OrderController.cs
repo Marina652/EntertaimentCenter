@@ -54,7 +54,7 @@ public class OrderController : ControllerBase
         {
             var orderClient = await _clientService.FindById(order.ClientId);
             var discountCard = await _discountCardService.FindById(order.ClientId);
-            var orderEvents = (await _eventService.SelectAll(token)).Where(i => i.Id == order.CustomEventId);
+            var orderEvent = (await _eventService.SelectAll(token)).FirstOrDefault(i => i.Id == order.CustomEventId);
 
             fullOrderInformationList.Add(new FullOrderInformation
             {
@@ -62,8 +62,8 @@ public class OrderController : ControllerBase
                 ClientName = orderClient.Name,
                 ClientEmail = orderClient.Email,
                 DiscountValue = (await _discountService.FindById(discountCard.DiscountId)).Value,
-                Events = orderEvents.ToList(),
-                StartTime = orderEvents.First().StartTime.Date,
+                EventDescription = orderEvent.Description,
+                StartTime = orderEvent.StartTime,
                 PlaceId = (await _placeService.FindById(order.PlaceId)).Id,
                 OrderStatus = order.Status,
             });

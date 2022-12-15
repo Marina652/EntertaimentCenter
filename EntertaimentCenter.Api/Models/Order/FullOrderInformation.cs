@@ -12,7 +12,7 @@ public class FullOrderInformation
 
     public decimal DiscountValue { get; set;}
 
-    public List<CustomEvent> Events { get; set;}
+    public string EventDescription { get; set;}
 
     public DateTime StartTime { get; set;}
 
